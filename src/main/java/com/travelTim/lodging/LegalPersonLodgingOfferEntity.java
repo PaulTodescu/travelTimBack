@@ -20,9 +20,9 @@ public class LegalPersonLodgingOfferEntity extends LodgingOfferEntity {
     }
 
     public LegalPersonLodgingOfferEntity(Integer nrRooms, Integer nrBathrooms, Integer nrSingleBeds, Integer nrDoubleBeds,
-                                         Integer floor, Float price, Currency currency, String description, String email,
-                                         String phoneNumber, BusinessEntity business, Set<LodgingOfferUtilityEntity> utilities) {
-        super(nrRooms, nrBathrooms, nrSingleBeds, nrDoubleBeds, floor, price, currency, description, email, phoneNumber, utilities);
+                                         Integer floor, Float price, Currency currency, String description,
+                                         BusinessEntity business, Set<LodgingOfferUtilityEntity> utilities) {
+        super(nrRooms, nrBathrooms, nrSingleBeds, nrDoubleBeds, floor, price, currency, description, utilities);
         this.business = business;
     }
 

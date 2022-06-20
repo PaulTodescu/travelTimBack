@@ -3,6 +3,7 @@ package com.travelTim.attractions;
 import com.travelTim.business.BusinessDTOMapper;
 import com.travelTim.business.BusinessDetailsDTO;
 import com.travelTim.business.BusinessEntity;
+import com.travelTim.contact.OfferContactEntity;
 import com.travelTim.location.City;
 import com.travelTim.offer.OfferStatus;
 import com.travelTim.ticket.TicketEntity;
@@ -25,6 +26,7 @@ public class AttractionOfferDetailsDTO {
     private Long nrViews;
     private BusinessEntity business;
     private Set<TicketEntity> tickets;
+    private OfferContactEntity offerContact;
     private UserEntity user;
 
     public AttractionOfferDetailsDTO() {
@@ -32,7 +34,8 @@ public class AttractionOfferDetailsDTO {
 
     public AttractionOfferDetailsDTO(Long id, String title, String address, City city,
                                      String description, OfferStatus status, Long nrViews,
-                                     BusinessEntity business, Set<TicketEntity> tickets, UserEntity user) {
+                                     BusinessEntity business, Set<TicketEntity> tickets,
+                                     OfferContactEntity offerContact, UserEntity user) {
         this.id = id;
         this.title = title;
         this.address = address;
@@ -42,6 +45,7 @@ public class AttractionOfferDetailsDTO {
         this.nrViews = nrViews;
         this.business = business;
         this.tickets = tickets;
+        this.offerContact = offerContact;
         this.user = user;
     }
 
@@ -105,6 +109,14 @@ public class AttractionOfferDetailsDTO {
 
     public void setTickets(Set<TicketEntity> tickets) {
         this.tickets = tickets;
+    }
+
+    public OfferContactEntity getOfferContact() {
+        return offerContact;
+    }
+
+    public void setOfferContact(OfferContactEntity offerContact) {
+        this.offerContact = offerContact;
     }
 
     public UserDetailsDTO getUser() {
