@@ -73,14 +73,14 @@ public class CategoryService {
 
         // offers with price in EUR need to be converted to RON
         CurrencyConverter currencyConverter = new CurrencyConverter();
-        //Float conversionRateFromEUR = currencyConverter.getCurrencyConversionRate(Currency.EUR.name(), Currency.RON.name());
+        Float conversionRateFromEUR = currencyConverter.getCurrencyConversionRate(Currency.EUR.name(), Currency.RON.name());
         Set<LodgingOfferEntity> activeOffers = category.getLodgingOffers().stream()
                 .filter(offer -> offer.getStatus() == OfferStatus.active)
                 .collect(Collectors.toSet());
         Set<LodgingOfferDTO> offers = mapper.mapLodgingOffersToDTOs(activeOffers);
         for (LodgingOfferDTO offer: offers){
             if (offer.getCurrency() == Currency.EUR){
-                //offer.setPrice(currencyConverter.getConvertedPrice(offer.getPrice(), conversionRateFromEUR));
+                offer.setPrice(currencyConverter.getConvertedPrice(offer.getPrice(), conversionRateFromEUR));
                 offer.setCurrency(Currency.RON);
             }
             if (offer.getBusiness() != null) { // offer is of legal type
@@ -88,33 +88,25 @@ public class CategoryService {
                 // for offers which have a business
                 //      - set creation date to the date of the latest offer in that business
                 //      - set price to the cheapest offer (conversion between eur and ron is also handled)
-                Set<LegalPersonLodgingOfferEntity> lodgingOffers = offer.getBusiness().getLodgingOffers();
+                Set<LegalPersonLodgingOfferEntity> legalLodgingOffers = offer.getBusiness().getLodgingOffers();
 
-                List<LocalDateTime> offerDates = lodgingOffers.stream()
+                List<LocalDateTime> offerDates = legalLodgingOffers.stream()
                         .map(LodgingOfferEntity::getCreatedAt).sorted().collect(Collectors.toList());
                 offer.setCreatedAt(offerDates.get(offerDates.size() - 1));
 
-                List<LodgingOfferEntity> offersListSortedByPrice = new ArrayList<>(lodgingOffers);
-
-//                offersListSortedByPrice.sort((o1, o2) -> {
-//                    Float priceOffer1 = currencyConverter.getConvertedPrice(o1.getPrice(), conversionRateFromEUR);
-//                    Float priceOffer2 = currencyConverter.getConvertedPrice(o2.getPrice(), conversionRateFromEUR);
-//                    if (priceOffer1 < priceOffer2) {
-//                        return -1;
-//                    } else if (priceOffer1 > priceOffer2) {
-//                        return 1;
-//                    }
-//                    return 0;
-//                });
-
-                LodgingOfferEntity cheapestOffer = offersListSortedByPrice.get(0);
-                Float cheapestOfferPrice;
-                if (cheapestOffer.getCurrency() == Currency.EUR){
-                    //cheapestOfferPrice = currencyConverter.getConvertedPrice(cheapestOffer.getPrice(), conversionRateFromEUR);
-                } else {
-                    cheapestOfferPrice = cheapestOffer.getPrice();
+                List<Float> offerPrices = new ArrayList<>();
+                for (LodgingOfferEntity legalOffer: legalLodgingOffers) {
+                    Float price = legalOffer.getPrice();
+                    if (legalOffer.getCurrency() == Currency.EUR) {
+                        price = currencyConverter.getConvertedPrice(price, conversionRateFromEUR);
+                    }
+                    offerPrices.add(price);
                 }
-                //offer.setPrice(cheapestOfferPrice);
+
+                Float cheapestOfferPrice = offerPrices.stream()
+                        .min(Comparator.comparing(Float::floatValue))
+                        .orElseThrow(NoSuchElementException::new);
+                offer.setPrice(cheapestOfferPrice);
 
             } else { // offer is of physical type
                offer.setImage(this.imageService.getOfferFrontImage("lodging", offer.getId()));

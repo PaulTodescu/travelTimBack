@@ -42,7 +42,7 @@ public class BusinessEntity {
     @JsonIgnore
     private UserEntity user;
 
-    @OneToMany(mappedBy = "business", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "business")
     @JsonIgnore
     private Set<LegalPersonLodgingOfferEntity> lodgingOffers = new HashSet<>();
 

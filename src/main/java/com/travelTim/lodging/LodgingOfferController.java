@@ -1,18 +1,12 @@
 package com.travelTim.lodging;
 
 import com.travelTim.business.BusinessDaySchedule;
-import com.travelTim.business.BusinessEntity;
-import com.travelTim.contact.OfferContactEntity;
-import com.travelTim.currency.Currency;
 import com.travelTim.offer.OfferStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -40,41 +34,11 @@ public class LodgingOfferController {
         return new ResponseEntity<>(offerId, HttpStatus.CREATED);
     }
 
-//    @GetMapping(path = "/{offerId}/details")
-//    public ResponseEntity<LodgingOfferDetailsDTO> getLodgingOfferDetails(
-//            @PathVariable("offerId") Long offerId){
-//        LodgingOfferDetailsDTO offer = this.lodgingOfferService.getLodgingOfferDetails(offerId);
-//        return new ResponseEntity<>(offer, HttpStatus.OK);
-//    }
-
     @GetMapping(path = "/legal/{offerId}/business/schedule")
     public ResponseEntity<Set<BusinessDaySchedule>> getBusinessScheduleForLegalLodgingOffer(
             @PathVariable("offerId") Long offerId){
         Set<BusinessDaySchedule> schedule = this.lodgingOfferService.getBusinessScheduleForLegalLodgingOffer(offerId);
         return new ResponseEntity<>(schedule, HttpStatus.OK);
-    }
-
-    @PutMapping(path = "/{offerId}/contact/add")
-    public ResponseEntity<Void> addOfferContact(
-            @PathVariable("offerId") Long offerId,
-            @RequestBody OfferContactEntity offerContact){
-        this.lodgingOfferService.addContactDetails(offerId, offerContact);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PutMapping(path = "/{offerId}/contact/edit")
-    public ResponseEntity<Void> editOfferContact(
-            @PathVariable("offerId") Long offerId,
-            @RequestBody OfferContactEntity offerContact){
-        this.lodgingOfferService.editContactDetails(offerId, offerContact);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/{offerId}/contact")
-    public ResponseEntity<OfferContactEntity> getOfferContact(
-            @PathVariable("offerId") Long offerId){
-        OfferContactEntity contact = this.lodgingOfferService.getContactDetails(offerId);
-        return new ResponseEntity<>(contact, HttpStatus.OK);
     }
 
     @GetMapping(path = "/physical/{offerId}")

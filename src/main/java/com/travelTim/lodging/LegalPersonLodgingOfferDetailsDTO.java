@@ -126,4 +126,5 @@ public class LegalPersonLodgingOfferDetailsDTO {
     public void setUtilities(Set<LodgingOfferUtilityEntity> utilities) {
         this.utilities = utilities;
     }
+
 }

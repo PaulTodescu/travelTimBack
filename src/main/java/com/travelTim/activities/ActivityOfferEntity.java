@@ -3,16 +3,13 @@ package com.travelTim.activities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.travelTim.business.BusinessEntity;
 import com.travelTim.category.CategoryEntity;
-import com.travelTim.contact.OfferContactEntity;
 import com.travelTim.favourites.FavouriteOffersEntity;
 import com.travelTim.location.City;
 import com.travelTim.offer.OfferStatus;
 import com.travelTim.ticket.TicketEntity;
-import com.travelTim.user.UserContactDTO;
 import com.travelTim.user.UserDTOMapper;
 import com.travelTim.user.UserDetailsDTO;
 import com.travelTim.user.UserEntity;
-import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -50,6 +47,9 @@ public class ActivityOfferEntity {
     @Column(nullable = false)
     private Long nrViews;
 
+    private String email;
+    private String phoneNumber;
+
     @ManyToOne
     @JoinColumn(columnDefinition = "user_id")
     private UserEntity user;
@@ -71,10 +71,6 @@ public class ActivityOfferEntity {
     )
     private Set<TicketEntity> tickets = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "offer_contact_id")
-    private OfferContactEntity offerContact;
-
     @ManyToMany(mappedBy = "activityOffers")
     @JsonIgnore
     private Set<FavouriteOffersEntity> favourites = new HashSet<>();
@@ -82,18 +78,24 @@ public class ActivityOfferEntity {
     public ActivityOfferEntity() {
     }
 
-    public ActivityOfferEntity(String title, String address, City city, String description, Set<TicketEntity> tickets) {
+    public ActivityOfferEntity(String title, String address, City city, String email, String phoneNumber,
+                               String description, Set<TicketEntity> tickets) {
         this.title = title;
         this.address = address;
         this.city = city;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
         this.description = description;
         this.tickets = tickets;
     }
 
-    public ActivityOfferEntity(String title, String address, City city, String description, BusinessEntity business, Set<TicketEntity> tickets) {
+    public ActivityOfferEntity(String title, String address, City city, String email, String phoneNumber,
+                               String description, BusinessEntity business, Set<TicketEntity> tickets) {
         this.title = title;
         this.address = address;
         this.city = city;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
         this.description = description;
         this.business = business;
         this.tickets = tickets;
@@ -129,6 +131,22 @@ public class ActivityOfferEntity {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getDescription() {
@@ -201,14 +219,6 @@ public class ActivityOfferEntity {
 
     public void setNrViews(Long nrViews) {
         this.nrViews = nrViews;
-    }
-
-    public OfferContactEntity getOfferContact() {
-        return offerContact;
-    }
-
-    public void setOfferContact(OfferContactEntity offerContact) {
-        this.offerContact = offerContact;
     }
 
     public Set<FavouriteOffersEntity> getFavourites() {

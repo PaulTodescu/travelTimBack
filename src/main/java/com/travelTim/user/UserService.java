@@ -54,7 +54,7 @@ public class UserService {
         this.businessService = businessService;
     }
 
-    public void addUser(UserEntity user) throws IOException {
+    public void registerUser(UserEntity user) throws IOException {
         Optional<UserEntity> userOptional = userDAO.findUserEntityByEmail(user.getEmail());
         if (userOptional.isPresent()){
             throw new IllegalArgumentException("User with email " + user.getEmail() + " already exists");
@@ -187,11 +187,11 @@ public class UserService {
         LodgingDTOMapper mapper = new LodgingDTOMapper();
         // offers with price in EUR need to be converted to RON
         CurrencyConverter currencyConverter = new CurrencyConverter();
-        //Float conversionRateFromEUR = currencyConverter.getCurrencyConversionRate(Currency.EUR.name(), Currency.RON.name());
+        Float conversionRateFromEUR = currencyConverter.getCurrencyConversionRate(Currency.EUR.name(), Currency.RON.name());
         Set<LodgingOfferBaseDetailsDTO> offers = mapper.mapLodgingOffersToBaseDetailsDTOs(user.getLodgingOffers());
         for (LodgingOfferBaseDetailsDTO offer: offers){
             if (offer.getCurrency() == Currency.EUR){
-                //offer.setPrice(currencyConverter.getConvertedPrice(offer.getPrice(), conversionRateFromEUR));
+                offer.setPrice(currencyConverter.getConvertedPrice(offer.getPrice(), conversionRateFromEUR));
                 offer.setCurrency(Currency.RON);
             }
             offer.setImage(this.imageService.getOfferFrontImage("lodging", offer.getId()));
@@ -243,16 +243,16 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public List<PhysicalPersonLodgingOfferDTO> getLodgingOffersForUserPage(Long userId){
+    public List<PhysicalPersonLodgingOfferDTO> getLodgingOffersForUserPage(Long userId) throws IOException {
         UserEntity user = this.findUserById(userId);
         LodgingDTOMapper mapper = new LodgingDTOMapper();
         CurrencyConverter currencyConverter = new CurrencyConverter();
-        //Float conversionRateFromEUR = currencyConverter.getCurrencyConversionRate(Currency.EUR.name(), Currency.RON.name());
+        Float conversionRateFromEUR = currencyConverter.getCurrencyConversionRate(Currency.EUR.name(), Currency.RON.name());
         Set<PhysicalPersonLodgingOfferDTO> offers =
                 mapper.mapPhysicalPersonLodgingOffersToDTOs(user.getPhysicalPersonLodgingOffers());
         for (PhysicalPersonLodgingOfferDTO offer: offers){
             if (offer.getCurrency() == Currency.EUR){
-                //offer.setPrice(currencyConverter.getConvertedPrice(offer.getPrice(), conversionRateFromEUR));
+                offer.setPrice(currencyConverter.getConvertedPrice(offer.getPrice(), conversionRateFromEUR));
                 offer.setCurrency(Currency.RON);
             }
             offer.setImage(this.imageService.getOfferFrontImage("lodging", offer.getId()));

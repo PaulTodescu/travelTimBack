@@ -3,8 +3,7 @@ package com.travelTim.activities;
 import com.travelTim.category.CategoryEntity;
 import com.travelTim.category.CategoryService;
 import com.travelTim.category.CategoryType;
-import com.travelTim.contact.OfferContactDAO;
-import com.travelTim.contact.OfferContactEntity;
+import com.travelTim.contact.OfferContact;
 import com.travelTim.favourites.FavouriteOffersEntity;
 import com.travelTim.files.ImageService;
 import com.travelTim.offer.OfferStatus;
@@ -28,18 +27,15 @@ public class ActivityOfferService {
     private final ActivityOfferDAO activityOfferDAO;
     private final UserService userService;
     private final TicketDAO ticketDAO;
-    private final OfferContactDAO offerContactDAO;
     private final CategoryService categoryService;
     private final ImageService imageService;
 
     @Autowired
     public ActivityOfferService(ActivityOfferDAO activityOfferDAO, UserService userService,
-                                TicketDAO ticketDAO, OfferContactDAO offerContactDAO,
-                                CategoryService categoryService, ImageService imageService) {
+                                TicketDAO ticketDAO, CategoryService categoryService, ImageService imageService) {
         this.activityOfferDAO = activityOfferDAO;
         this.userService = userService;
         this.ticketDAO = ticketDAO;
-        this.offerContactDAO = offerContactDAO;
         this.categoryService = categoryService;
         this.imageService = imageService;
     }
@@ -69,56 +65,6 @@ public class ActivityOfferService {
         }
         offer.setTickets(tickets);
         this.activityOfferDAO.save(offer);
-    }
-
-    public void addContactDetails(Long offerId, OfferContactEntity offerContact){
-        ActivityOfferEntity offer = this.findActivityOfferById(offerId);
-        this.setContactDetails(offer, offerContact);
-    }
-
-    public void editContactDetails(Long offerId, OfferContactEntity offerContact){
-        ActivityOfferEntity offer = this.findActivityOfferById(offerId);
-        OfferContactEntity initialOfferContact = offer.getOfferContact();
-        if (!initialOfferContact.equals(offerContact)) {
-            initialOfferContact.getActivityOffers().remove(offer);
-            offer.setOfferContact(null);
-            if (initialOfferContact.getAttractionOffers().size() == 0){
-                this.offerContactDAO.deleteOfferContactEntityById(initialOfferContact.getId());
-            }
-        }
-        this.setContactDetails(offer, offerContact);
-    }
-
-    public void setContactDetails(ActivityOfferEntity offer, OfferContactEntity offerContact){
-        Optional<OfferContactEntity> contactOptional = this.offerContactDAO
-                .findOfferContactEntityByEmailAndPhoneNumber(
-                        offerContact.getEmail(),
-                        offerContact.getPhoneNumber());
-        if (contactOptional.isPresent()) {
-            offer.setOfferContact(contactOptional.get());
-        } else {
-            offer.setOfferContact(this.offerContactDAO.save(offerContact));
-        }
-        this.activityOfferDAO.save(offer);
-    }
-
-    public OfferContactEntity getContactDetails(Long offerId) {
-        ActivityOfferEntity offer = this.findActivityOfferById(offerId);
-        return offer.getOfferContact();
-    }
-
-    public void deleteOfferContact(ActivityOfferEntity offer, OfferContactEntity offerContact) {
-        if (offerContact != null) {
-            offer.setOfferContact(null);
-            offerContact.getActivityOffers().remove(offer);
-            if (offerContact.getLodgingOffers().size() == 0 &&
-                    offerContact.getFoodOffers().size() == 0 &&
-                    offerContact.getAttractionOffers().size() == 0 &&
-                    offerContact.getActivityOffers().size() == 0) {
-                this.offerContactDAO.deleteOfferContactEntityById(offerContact.getId());
-            }
-            this.activityOfferDAO.save(offer);
-        }
     }
 
     public ActivityOfferEntity findActivityOfferById(Long offerId) {
@@ -183,7 +129,6 @@ public class ActivityOfferService {
     public void deleteActivityOffer(Long offerId){
         ActivityOfferEntity offer = this.findActivityOfferById(offerId);
         this.deleteOfferTickets(offer.getId());
-        this.deleteOfferContact(offer, offer.getOfferContact());
         this.removeActivityOfferFromFavorites(offer);
         this.imageService.deleteOfferImages("activities", offerId);
         this.activityOfferDAO.deleteActivityOfferEntityById(offerId);
@@ -217,4 +162,5 @@ public class ActivityOfferService {
         }
         return tickets.stream().collect(Collectors.averagingDouble(TicketEntity::getPrice));
     }
+
 }

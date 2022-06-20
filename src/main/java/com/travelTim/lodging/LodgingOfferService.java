@@ -5,8 +5,6 @@ import com.travelTim.business.BusinessEntity;
 import com.travelTim.business.BusinessService;
 import com.travelTim.category.CategoryService;
 import com.travelTim.category.CategoryType;
-import com.travelTim.contact.OfferContactDAO;
-import com.travelTim.contact.OfferContactEntity;
 import com.travelTim.currency.Currency;
 import com.travelTim.currency.CurrencyConverter;
 import com.travelTim.favourites.FavouriteOffersEntity;
@@ -35,7 +33,6 @@ public class LodgingOfferService {
     private final LegalPersonLodgingOfferDAO legalPersonLodgingOfferDAO;
     private final PhysicalPersonLodgingOfferDAO physicalPersonLodgingOfferDAO;
     private final LodgingOfferUtilityDAO lodgingOfferUtilityDAO;
-    private final OfferContactDAO offerContactDAO;
     private final UserService userService;
     private final CategoryService categoryService;
     private final ImageService imageService;
@@ -46,8 +43,7 @@ public class LodgingOfferService {
     @Autowired
     public LodgingOfferService(LodgingOfferDAO lodgingOfferDAO, LegalPersonLodgingOfferDAO legalPersonLodgingOfferDAO,
                                PhysicalPersonLodgingOfferDAO physicalPersonLodgingOfferDAO,
-                               LodgingOfferUtilityDAO lodgingOfferUtilityDAO,
-                               OfferContactDAO offerContactDAO, UserService userService,
+                               LodgingOfferUtilityDAO lodgingOfferUtilityDAO, UserService userService,
                                CategoryService categoryService, ImageService imageService,
                                @Lazy BusinessService businessService,
                                @Lazy FavouriteOffersService favouriteOffersService,
@@ -56,7 +52,6 @@ public class LodgingOfferService {
         this.legalPersonLodgingOfferDAO = legalPersonLodgingOfferDAO;
         this.physicalPersonLodgingOfferDAO = physicalPersonLodgingOfferDAO;
         this.lodgingOfferUtilityDAO = lodgingOfferUtilityDAO;
-        this.offerContactDAO = offerContactDAO;
         this.userService = userService;
         this.categoryService = categoryService;
         this.imageService = imageService;
@@ -230,52 +225,6 @@ public class LodgingOfferService {
         return mapper.mapLodgingOfferToPhysicalPersonOfferEditDTO(offer);
     }
 
-    public void addContactDetails(Long offerId, OfferContactEntity offerContact){
-        LodgingOfferEntity offer = this.findLodgingOfferEntityById(offerId);
-        this.setContactDetails(offer, offerContact);
-    }
-
-    public void editContactDetails(Long offerId, OfferContactEntity offerContact){
-        LodgingOfferEntity offer = this.findLodgingOfferEntityById(offerId);
-        OfferContactEntity initialOfferContact = offer.getOfferContact();
-        if (!initialOfferContact.equals(offerContact)) {
-            this.deleteOfferContact(offer, initialOfferContact);
-        }
-        this.setContactDetails(offer, offerContact);
-    }
-
-    public void setContactDetails(LodgingOfferEntity offer, OfferContactEntity offerContact){
-        Optional<OfferContactEntity> contactOptional = this.offerContactDAO
-                .findOfferContactEntityByEmailAndPhoneNumber(
-                        offerContact.getEmail(),
-                        offerContact.getPhoneNumber());
-        if (contactOptional.isPresent()) {
-            offer.setOfferContact(contactOptional.get());
-        } else {
-            offer.setOfferContact(this.offerContactDAO.save(offerContact));
-        }
-        this.lodgingOfferDAO.save(offer);
-    }
-
-    public OfferContactEntity getContactDetails(Long offerId) {
-        LodgingOfferEntity offer = this.findLodgingOfferEntityById(offerId);
-        return offer.getOfferContact();
-    }
-
-    public void deleteOfferContact(LodgingOfferEntity offer, OfferContactEntity offerContact) {
-        if (offerContact != null) {
-            offer.setOfferContact(null);
-            offerContact.getLodgingOffers().remove(offer);
-            if (offerContact.getLodgingOffers().size() == 0 &&
-                    offerContact.getFoodOffers().size() == 0 &&
-                    offerContact.getAttractionOffers().size() == 0 &&
-                    offerContact.getActivityOffers().size() == 0) {
-                this.offerContactDAO.deleteOfferContactEntityById(offerContact.getId());
-            }
-            this.lodgingOfferDAO.save(offer);
-        }
-    }
-
     public void editLegalPersonLodgingOffer(LegalPersonLodgingOfferEditDTO offerToSave,
                                             Long offerId){
         LegalPersonLodgingOfferEntity offer =
@@ -332,7 +281,6 @@ public class LodgingOfferService {
     public void deleteLodgingOffer(Long offerId) {
         LodgingOfferEntity offer = this.findLodgingOfferEntityById(offerId);
         this.deleteLodgingOfferUtilities(offer);
-        this.deleteOfferContact(offer, offer.getOfferContact());
         this.removeLodgingOfferFromFavorites(offer);
         this.imageService.deleteOfferImages("lodging", offerId);
         this.lodgingOfferDAO.deleteLodgingOfferEntityById(offerId);

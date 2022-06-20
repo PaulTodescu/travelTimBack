@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "traveltim",
+  "private_key_id": "c544f6feee2694fab00e5a0c502ffcd9207ff328",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDHuMrBCjSDxjm6\ni13KPcQdRXPQFXcgDLYjV4kkLhK/wNR6UObZ/I7EAbNdsLyvCEJR74eSjXv1f+7U\n1/kNQJZOxe7KrpV/UpohYS2d4IUe5pxfhJjpqQPF90D1Z08m/H3qH+ILWOpjbhcx\nqJGlzFr/Ttnx5cJA/lWWwEmytOHvYTHyflvTmsRuKyM4OGKEiP4iDCU2zK43AWtt\nIcTVZWpb6XFRovyjK9UyVcHLz48Bgz/jEIpUgwv6ghQioCPJ6/6jlVDBB/j5ax4K\nEo5kU0SskrRgEQLUSIGlhWcTSat2Vaxbj5GD9KuwoBoS2CkCBJPbpfhOBt7KQagu\nGNkcM0jXAgMBAAECggEAAiRDtnc3hBQ6hPsDI47zRHPjPXkWhRlcusX1BziGl4s0\npJ40EnWbfaTIfdesGX+6rHb867/1pm4xAItb8MRF1jdGz/NA2RPXtqxi3XkrYAEn\nQ6cVUVtSc++zDblKYPat1tiTR1MBVPeOFciJVfWk3eS7zRkmzFgWYiLjqY8FEEef\n+ZJqYStsRi9J600WjcdLYCcJx5CvbK7tK3lsiRXoB2WvdMw+dblXI8T070Kw622G\nIgeVs7Y2JknQQLRuKUn9x+W4q5QsOWLebgDPFHrMKqSg4hm2ISsjPVlJMI1gVgbE\nLZqxz1CIkUGbOXJQPEFlW8YTGy5nBhUkzGmzLqq5WQKBgQD0DtoHiiv6+FOpMgNV\npqOXqp7s807xiTl04cuhz6GYsyf/R8g/MgE0VyMd52Hv8RTjXpcmUrxSXTxXtU8z\nGbF+IIzK5rbOjJeWzJWx2dt9Ln4+HKyheQ469If8zwpjJVsirYflPt9FddNuDNHX\nzRNEAz46jDdwJAi/qVmCWjQEiQKBgQDRfpJESdg9mbMoNj2BdX1U5DGpTxaBX87K\nxTW2ejVPPEgZKWBSn8gLakYju/XIQbnRI39zS6umNfDxN0OVax5d35tWWfF1I/+J\n+4DpO+PRgeT8x4EZNoho+Xu+YDYq8VG+VAP5+nn+hkMwjTervYi/dTzWRtP73BYH\noZk5s2ZKXwKBgQCEoRmNZWI3NgJI/VvgjPl0L43EWQj6q8ckpJxD6BD6acn/qePB\nrAwJhJ0Z4CdR/KKMWVgsxGOBIxfq1iYfMARL9aZtkWmg37h1g+KJz0m/QqfqWyzZ\nZ277TO4lzeHoNWHMe59RTpSJK9nlgWP8MX8Zw+Vqbc6my35Rodd5xklkeQKBgBx9\nu0TASkFuctgoMEs4AFiYREzDbcsgjY40Le7oRfHFwAR0BR6XjmxHAsz/VhjrH2tb\nCY1ToD+VnHQh0PY0QEgCDi07RERrJejNJKYTuBMZOFxMgbk9GmY0b+jfSt6iPTzG\nTlgkAY1lEyQ6QHUB7OQk/KYjsdbSAsj86ErZpDK/AoGAeJbaJOLhlinkhkcGywUv\nSS7hobMYg3PhYGuOwon6iY5zklo2Z9Fza5SY/+tNNsHOehKHU61e1wFKZZKV/51C\ntR35DyLIkJgFqsHc5Uq+7ifJLc8l70I2usmlZYNE8MFx7vwrz60KmPilMv2BoGAj\nR9vVtuPHEc5mc+BvsTjF2o4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "traveltim-cloud-storage@traveltim.iam.gserviceaccount.com",
+  "client_id": "108982354767938797324",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/traveltim-cloud-storage%40traveltim.iam.gserviceaccount.com"
+}

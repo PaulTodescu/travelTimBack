@@ -35,8 +35,8 @@ public class UserController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<UserEntity> adduser(@RequestBody UserEntity user) throws IOException {
-        userService.addUser(user);
+    public ResponseEntity<UserEntity> registerUser(@RequestBody UserEntity user) throws IOException {
+        userService.registerUser(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

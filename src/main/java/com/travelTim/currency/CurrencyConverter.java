@@ -14,13 +14,13 @@ import java.text.DecimalFormatSymbols;
 
 public class CurrencyConverter {
 
-    private static final String API_KEY = "43ee668e2a0dfe87fc7c";
+    private static final String API_KEY = "1e23c37d20db463a80fea05d54befd27";
 
     public CurrencyConverter() {
     }
 
     public Float getCurrencyConversionRate(String fromCode, String toCode) throws IOException {
-        String REQUEST_URL = "https://free.currconv.com/api/v7/convert?q=" +
+        String REQUEST_URL = "https://api.currconv.com/api/v7/convert?q=" +
                 fromCode + '_' + toCode + "&compact=ultra&apiKey=" + API_KEY;
         URL url = new URL(REQUEST_URL);
 

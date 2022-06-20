@@ -25,10 +25,9 @@ public class PhysicalPersonLodgingOfferEntity extends LodgingOfferEntity {
 
     public PhysicalPersonLodgingOfferEntity(Integer nrRooms, Integer nrBathrooms,
                                             Integer nrSingleBeds, Integer nrDoubleBeds, Integer floor, Float price,
-                                            Currency currency, String description,
-                                            Set<LodgingOfferUtilityEntity> utilities,
-                                            String title, String address, City city) {
-        super(nrRooms, nrBathrooms, nrSingleBeds, nrDoubleBeds, floor, price, currency, description, utilities);
+                                            Currency currency, String description, String email, String phoneNumber,
+                                            Set<LodgingOfferUtilityEntity> utilities, String title, String address, City city) {
+        super(nrRooms, nrBathrooms, nrSingleBeds, nrDoubleBeds, floor, price, currency, description, email, phoneNumber, utilities);
         this.title = title;
         this.address = address;
         this.city = city;
