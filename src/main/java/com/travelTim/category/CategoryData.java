@@ -16,12 +16,12 @@ public class CategoryData implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-
-        saveCategory(new CategoryEntity("lodging"));
-        saveCategory(new CategoryEntity("food"));
-        saveCategory(new CategoryEntity("attractions"));
-        saveCategory(new CategoryEntity("activities"));
-
+        if (this.categoryDAO.findAll().isEmpty()) {
+            saveCategory(new CategoryEntity("lodging"));
+            saveCategory(new CategoryEntity("food"));
+            saveCategory(new CategoryEntity("attractions"));
+            saveCategory(new CategoryEntity("activities"));
+        }
     }
 
     public void saveCategory(CategoryEntity categoryEntity){

@@ -3,7 +3,6 @@ package com.travelTim.food;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.travelTim.business.BusinessEntity;
 import com.travelTim.category.CategoryEntity;
-import com.travelTim.contact.OfferContactEntity;
 import com.travelTim.favourites.FavouriteOffersEntity;
 import com.travelTim.offer.OfferStatus;
 import com.travelTim.user.UserContactDTO;
@@ -25,6 +24,9 @@ public class FoodOfferEntity {
 
     @Column(nullable = false)
     private String description;
+
+    private String email;
+    private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -57,10 +59,6 @@ public class FoodOfferEntity {
     )
     private Set<FoodMenuCategory> foodMenuCategories = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "offer_contact_id")
-    private OfferContactEntity offerContact;
-
     @ManyToMany(mappedBy = "foodOffers")
     @JsonIgnore
     private Set<FavouriteOffersEntity> favourites = new HashSet<>();
@@ -68,9 +66,11 @@ public class FoodOfferEntity {
     public FoodOfferEntity() {
     }
 
-    public FoodOfferEntity(BusinessEntity business, String description) {
+    public FoodOfferEntity(BusinessEntity business, String description, String email, String phoneNumber) {
         this.business = business;
         this.description = description;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getId() {
@@ -87,6 +87,22 @@ public class FoodOfferEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public BusinessEntity getBusiness() {
@@ -152,14 +168,6 @@ public class FoodOfferEntity {
 
     public void setNrViews(Long nrViews) {
         this.nrViews = nrViews;
-    }
-
-    public OfferContactEntity getOfferContact() {
-        return offerContact;
-    }
-
-    public void setOfferContact(OfferContactEntity offerContact) {
-        this.offerContact = offerContact;
     }
 
     public Set<FavouriteOffersEntity> getFavourites() {

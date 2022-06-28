@@ -62,7 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/recommendations/lodging/user-type", "/recommendations/food",
                         "/recommendations/attractions/business-type", "/recommendations/attractions/user-type",
                         "/recommendations/activities/business-type", "/recommendations/activities/user-type",
-                        "/lodging/price/request", "/image/cloud-test")
+                        "/lodging/price/request", "/image/cloud-test", "/contact/{offerCategory}/{offerId}",
+                        "/contact/{offerCategory}/{offerId}")
                 .permitAll()
                 .antMatchers(HttpMethod.OPTIONS,"*")
                 .permitAll().anyRequest().authenticated()

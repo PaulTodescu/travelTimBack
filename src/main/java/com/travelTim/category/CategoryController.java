@@ -67,4 +67,9 @@ public class CategoryController {
         return new ResponseEntity<>(activityOffers, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/test")
+    public ResponseEntity<String> test(){
+        return new ResponseEntity<>("test", HttpStatus.OK);
+    }
+
 }

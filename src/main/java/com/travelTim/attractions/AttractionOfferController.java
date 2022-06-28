@@ -1,7 +1,5 @@
 package com.travelTim.attractions;
 
-import com.travelTim.contact.OfferContactEntity;
-import com.travelTim.food.FoodOffersStatistics;
 import com.travelTim.offer.OfferStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,29 +22,6 @@ public class AttractionOfferController {
     public ResponseEntity<Long> addAttractionOffer(@RequestBody AttractionOfferEntity attractionOffer){
         Long attractionId = this.attractionOfferService.addAttractionOffer(attractionOffer);
         return new ResponseEntity<>(attractionId, HttpStatus.CREATED);
-    }
-
-    @PutMapping(path = "/{offerId}/contact/add")
-    public ResponseEntity<Void> addOfferContact(
-            @PathVariable("offerId") Long offerId,
-            @RequestBody OfferContactEntity offerContact){
-        this.attractionOfferService.addContactDetails(offerId, offerContact);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PutMapping(path = "/{offerId}/contact/edit")
-    public ResponseEntity<Void> editOfferContact(
-            @PathVariable("offerId") Long offerId,
-            @RequestBody OfferContactEntity offerContact){
-        this.attractionOfferService.editContactDetails(offerId, offerContact);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/{offerId}/contact")
-    public ResponseEntity<OfferContactEntity> getOfferContact(
-            @PathVariable("offerId") Long offerId){
-        OfferContactEntity contact = this.attractionOfferService.getContactDetails(offerId);
-        return new ResponseEntity<>(contact, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{offerId}")

@@ -2,11 +2,9 @@ package com.travelTim.lodging;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.travelTim.category.CategoryEntity;
-import com.travelTim.contact.OfferContactEntity;
 import com.travelTim.currency.Currency;
 import com.travelTim.favourites.FavouriteOffersEntity;
 import com.travelTim.offer.OfferStatus;
-import com.travelTim.reservation.OfferReservationEntity;
 import com.travelTim.user.UserDTOMapper;
 import com.travelTim.user.UserDetailsDTO;
 import com.travelTim.user.UserEntity;
@@ -48,6 +46,9 @@ public abstract class LodgingOfferEntity {
 
     private String description;
 
+    private String email;
+    private String phoneNumber;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OfferStatus status;
@@ -76,10 +77,6 @@ public abstract class LodgingOfferEntity {
     )
     private Set<LodgingOfferUtilityEntity> utilities = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "offer_contact_id")
-    private OfferContactEntity offerContact;
-
     @ManyToMany(mappedBy = "lodgingOffers")
     @JsonIgnore
     private Set<FavouriteOffersEntity> favourites = new HashSet<>();
@@ -89,7 +86,7 @@ public abstract class LodgingOfferEntity {
 
     public LodgingOfferEntity(Integer nrRooms, Integer nrBathrooms, Integer nrSingleBeds,
                               Integer nrDoubleBeds, Integer floor, Float price, com.travelTim.currency.Currency currency,
-                              String description, Set<LodgingOfferUtilityEntity> utilities) {
+                              String description, String email, String phoneNumber, Set<LodgingOfferUtilityEntity> utilities) {
         this.nrRooms = nrRooms;
         this.nrBathrooms = nrBathrooms;
         this.nrSingleBeds = nrSingleBeds;
@@ -98,6 +95,8 @@ public abstract class LodgingOfferEntity {
         this.price = price;
         this.currency = currency;
         this.description = description;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
         this.utilities = utilities;
     }
 
@@ -173,6 +172,22 @@ public abstract class LodgingOfferEntity {
         this.description = description;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public OfferStatus getStatus() {
         return status;
     }
@@ -230,14 +245,6 @@ public abstract class LodgingOfferEntity {
 
     public void setNrViews(Long nrViews) {
         this.nrViews = nrViews;
-    }
-
-    public OfferContactEntity getOfferContact() {
-        return offerContact;
-    }
-
-    public void setOfferContact(OfferContactEntity offerContact) {
-        this.offerContact = offerContact;
     }
 
     public Set<FavouriteOffersEntity> getFavourites() {

@@ -1,29 +1,21 @@
 package com.travelTim.lodging;
 
-import com.travelTim.business.BusinessDTOMapper;
 import com.travelTim.business.BusinessEntity;
-import com.travelTim.business.BusinessDetailsDTO;
-import com.travelTim.contact.OfferContactEntity;
-import com.travelTim.offer.OfferStatus;
-
 
 public class LegalPersonLodgingOfferBaseDetailsDTO {
 
     private Long id;
     private String description;
     private BusinessEntity business;
-    private OfferContactEntity offerContact;
     private Long nrViews;
 
     public LegalPersonLodgingOfferBaseDetailsDTO() {
     }
 
-    public LegalPersonLodgingOfferBaseDetailsDTO(Long id, String description, BusinessEntity business,
-                                                 OfferContactEntity offerContact, Long nrViews) {
+    public LegalPersonLodgingOfferBaseDetailsDTO(Long id, String description, BusinessEntity business, Long nrViews) {
         this.id = id;
         this.description = description;
         this.business = business;
-        this.offerContact = offerContact;
         this.nrViews = nrViews;
     }
 
@@ -49,14 +41,6 @@ public class LegalPersonLodgingOfferBaseDetailsDTO {
 
     public void setBusiness(BusinessEntity business) {
         this.business = business;
-    }
-
-    public OfferContactEntity getOfferContact() {
-        return offerContact;
-    }
-
-    public void setOfferContact(OfferContactEntity offerContact) {
-        this.offerContact = offerContact;
     }
 
     public Long getNrViews() {

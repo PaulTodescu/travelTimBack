@@ -301,7 +301,7 @@ public class OfferReservationService {
         for (OfferReservationEntity reservation: reservations) {
             OfferReservationDTO reservationDTO = new OfferReservationDTO();
             reservationDTO.setId(reservation.getId());
-            reservationDTO.setDate(this.getFormattedDate(reservation.getCreatedAt()));
+            reservationDTO.setDate(reservation.getCreatedAt());
             reservationDTO.setTitle(reservation.getOfferTitle());
             reservationDTOs.add(reservationDTO);
         }
@@ -334,8 +334,8 @@ public class OfferReservationService {
         LodgingOfferEntity offer = this.lodgingService.findLodgingOfferEntityById(offerId);
         LodgingDTOMapper mapper = new LodgingDTOMapper();
         LodgingOfferDetailsForReservationDTO offerDetails = mapper.mapLodgingOfferToReservationDetailsDTO(offer);
-        offerDetails.setProviderEmail(offer.getOfferContact().getEmail());
-        offerDetails.setProviderPhone(offer.getOfferContact().getPhoneNumber());
+        offerDetails.setProviderEmail(offer.getEmail());
+        offerDetails.setProviderPhone(offer.getPhoneNumber());
         if (offer instanceof LegalPersonLodgingOfferEntity) {
             BusinessEntity offerBusiness = ((LegalPersonLodgingOfferEntity) offer).getBusiness();
             offerDetails.setProviderName(offerBusiness.getName());

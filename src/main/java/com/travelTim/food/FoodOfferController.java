@@ -1,6 +1,5 @@
 package com.travelTim.food;
 
-import com.travelTim.contact.OfferContactEntity;
 import com.travelTim.offer.OfferStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,29 +41,6 @@ public class FoodOfferController {
             @RequestBody FoodOfferEditDTO offerToSave){
         this.foodOfferService.editFoodOffer(offerToSave, offerId);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PutMapping(path = "/{offerId}/contact/add")
-    public ResponseEntity<Void> addOfferContact(
-            @PathVariable("offerId") Long offerId,
-            @RequestBody OfferContactEntity offerContact){
-        this.foodOfferService.addContactDetails(offerId, offerContact);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PutMapping(path = "/{offerId}/contact/edit")
-    public ResponseEntity<Void> editOfferContact(
-            @PathVariable("offerId") Long offerId,
-            @RequestBody OfferContactEntity offerContact){
-        this.foodOfferService.editContactDetails(offerId, offerContact);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/{offerId}/contact")
-    public ResponseEntity<OfferContactEntity> getOfferContact(
-            @PathVariable("offerId") Long offerId){
-        OfferContactEntity contact = this.foodOfferService.getContactDetails(offerId);
-        return new ResponseEntity<>(contact, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{offerId}")

@@ -3,8 +3,6 @@ package com.travelTim.food;
 import com.travelTim.category.CategoryEntity;
 import com.travelTim.category.CategoryService;
 import com.travelTim.category.CategoryType;
-import com.travelTim.contact.OfferContactDAO;
-import com.travelTim.contact.OfferContactEntity;
 import com.travelTim.favourites.FavouriteOffersEntity;
 import com.travelTim.files.ImageService;
 import com.travelTim.offer.OfferStatus;
@@ -28,20 +26,18 @@ public class FoodOfferService {
     private final FoodMenuCategoryDAO foodMenuCategoryDAO;
     private final FoodMenuItemDAO foodMenuItemDAO;
     private final UserService userService;
-    private final OfferContactDAO offerContactDAO;
     private final CategoryService categoryService;
     private final ImageService imageService;
 
     @Autowired
     public FoodOfferService(FoodOfferDAO foodOfferDAO, FoodMenuCategoryDAO foodMenuCategoryDAO,
                             FoodMenuItemDAO foodMenuItemDAO, UserService userService,
-                            OfferContactDAO offerContactDAO, CategoryService categoryService,
+                             CategoryService categoryService,
                             ImageService imageService) {
         this.foodOfferDAO = foodOfferDAO;
         this.foodMenuCategoryDAO = foodMenuCategoryDAO;
         this.foodMenuItemDAO = foodMenuItemDAO;
         this.userService = userService;
-        this.offerContactDAO = offerContactDAO;
         this.categoryService = categoryService;
         this.imageService = imageService;
     }
@@ -138,52 +134,6 @@ public class FoodOfferService {
         }
     }
 
-    public void addContactDetails(Long offerId, OfferContactEntity offerContact){
-        FoodOfferEntity offer = this.findFoodOfferById(offerId);
-        this.setContactDetails(offer, offerContact);
-    }
-
-    public void editContactDetails(Long offerId, OfferContactEntity offerContact){
-        FoodOfferEntity offer = this.findFoodOfferById(offerId);
-        OfferContactEntity initialOfferContact = offer.getOfferContact();
-        if (initialOfferContact != null && !initialOfferContact.equals(offerContact)) {
-            this.deleteOfferContact(offer, initialOfferContact);
-        }
-        this.setContactDetails(offer, offerContact);
-    }
-
-    public void setContactDetails(FoodOfferEntity offer, OfferContactEntity offerContact){
-        Optional<OfferContactEntity> contactOptional = this.offerContactDAO
-                .findOfferContactEntityByEmailAndPhoneNumber(
-                        offerContact.getEmail(),
-                        offerContact.getPhoneNumber());
-        if (contactOptional.isPresent()) {
-            offer.setOfferContact(contactOptional.get());
-        } else {
-            offer.setOfferContact(this.offerContactDAO.save(offerContact));
-        }
-        this.foodOfferDAO.save(offer);
-    }
-
-    public OfferContactEntity getContactDetails(Long offerId) {
-        FoodOfferEntity offer = this.findFoodOfferById(offerId);
-        return offer.getOfferContact();
-    }
-
-    public void deleteOfferContact(FoodOfferEntity offer, OfferContactEntity offerContact) {
-        if (offerContact != null) {
-            offer.setOfferContact(null);
-            offerContact.getFoodOffers().remove(offer);
-            if (offerContact.getLodgingOffers().size() == 0 &&
-                    offerContact.getFoodOffers().size() == 0 &&
-                    offerContact.getAttractionOffers().size() == 0 &&
-                    offerContact.getActivityOffers().size() == 0) {
-                this.offerContactDAO.deleteOfferContactEntityById(offerContact.getId());
-            }
-            this.foodOfferDAO.save(offer);
-        }
-    }
-
     public void removeFoodOfferFromFavorites(FoodOfferEntity offer){
         for (Iterator<FavouriteOffersEntity> iterator = offer.getFavourites().iterator(); iterator.hasNext();){
             FavouriteOffersEntity favourites = iterator.next();
@@ -196,7 +146,6 @@ public class FoodOfferService {
     public void deleteFoodOffer(Long offerId) {
         FoodOfferEntity offer = this.findFoodOfferById(offerId);
         this.deleteFoodOfferMenu(offer);
-        this.deleteOfferContact(offer, offer.getOfferContact());
         this.removeFoodOfferFromFavorites(offer);
         this.imageService.deleteOfferImages("food", offerId);
         this.foodOfferDAO.deleteFoodOfferEntityById(offerId);

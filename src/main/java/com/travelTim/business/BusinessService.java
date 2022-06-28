@@ -185,17 +185,17 @@ public class BusinessService {
         // convert offer prices to RON
         try {
              CurrencyConverter currencyConverter = new CurrencyConverter();
-             //Float conversionRateFromEUR = currencyConverter.getCurrencyConversionRate(Currency.EUR.name(), Currency.RON.name());
+             Float conversionRateFromEUR = currencyConverter.getCurrencyConversionRate(Currency.EUR.name(), Currency.RON.name());
             for (LegalPersonLodgingOfferDetailsDTO offer : offers) {
                 if (offer.getCurrency() == Currency.EUR) {
-                    // offer.setPrice(currencyConverter.getConvertedPrice(offer.getPrice(), conversionRateFromEUR));
+                    offer.setPrice(currencyConverter.getConvertedPrice(offer.getPrice(), conversionRateFromEUR));
                     offer.setCurrency(Currency.RON);
                 }
             }
-        } catch (Exception e){}
-//        catch (IOException ioException) {
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not retrieve currency for monetary conversion");
-//        }
+        }
+        catch (IOException ioException) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not retrieve currency for monetary conversion");
+        }
         return offers.stream()
                 .sorted(Comparator.comparing(LegalPersonLodgingOfferDetailsDTO::getPrice))
                 .collect(Collectors.toList());

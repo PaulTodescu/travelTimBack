@@ -1,9 +1,11 @@
 package com.travelTim.reservation;
 
+import java.time.LocalDateTime;
+
 public class OfferReservationDTO {
 
     private Long id;
-    private String date;
+    private LocalDateTime date;
     private String title;
 
     public OfferReservationDTO() {
@@ -17,11 +19,11 @@ public class OfferReservationDTO {
         this.id = id;
     }
 
-    public String getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(String createdAt) {
+    public void setDate(LocalDateTime createdAt) {
         this.date = createdAt;
     }
 

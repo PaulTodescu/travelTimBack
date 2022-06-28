@@ -1,7 +1,5 @@
 package com.travelTim.activities;
 
-import com.travelTim.attractions.AttractionOffersStatistics;
-import com.travelTim.contact.OfferContactEntity;
 import com.travelTim.offer.OfferStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,30 +23,6 @@ public class ActivityOfferController {
         Long activityId = this.activityOfferService.addActivityOffer(activityOffer);
         return new ResponseEntity<>(activityId, HttpStatus.CREATED);
     }
-
-    @PutMapping(path = "/{offerId}/contact/add")
-    public ResponseEntity<Void> addOfferContact(
-            @PathVariable("offerId") Long offerId,
-            @RequestBody OfferContactEntity offerContact){
-        this.activityOfferService.addContactDetails(offerId, offerContact);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PutMapping(path = "/{offerId}/contact/edit")
-    public ResponseEntity<Void> editOfferContact(
-            @PathVariable("offerId") Long offerId,
-            @RequestBody OfferContactEntity offerContact){
-        this.activityOfferService.editContactDetails(offerId, offerContact);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping(path = "/{offerId}/contact")
-    public ResponseEntity<OfferContactEntity> getOfferContact(
-            @PathVariable("offerId") Long offerId){
-        OfferContactEntity contact = this.activityOfferService.getContactDetails(offerId);
-        return new ResponseEntity<>(contact, HttpStatus.OK);
-    }
-
 
     @GetMapping("/{offerId}")
     public ResponseEntity<ActivityOfferEntity> findActivityOfferById(

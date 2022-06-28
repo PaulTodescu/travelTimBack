@@ -54,10 +54,8 @@ public class ReviewDTO {
         this.rating = rating;
     }
 
-    public String getCreatedAt() {
-        LocalDate formattedDateTime = this.createdAt.toLocalDate();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return formattedDateTime.format(dateFormatter);
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
