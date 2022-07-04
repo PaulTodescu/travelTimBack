@@ -42,9 +42,9 @@ public class LodgingOfferController {
     }
 
     @GetMapping(path = "/physical/{offerId}")
-    public ResponseEntity<LodgingOfferEntity> findPhysicalPersonLodgingOfferById(
+    public ResponseEntity<PhysicalPersonLodgingOfferDetailsDTO> findPhysicalPersonLodgingOfferById(
             @PathVariable("offerId") Long offerId) {
-        LodgingOfferEntity offer = this.lodgingOfferService.findPhysicalPersonLodgingOfferById(offerId);
+        PhysicalPersonLodgingOfferDetailsDTO offer = this.lodgingOfferService.findPhysicalPersonLodgingOfferById(offerId);
         return new ResponseEntity<>(offer, HttpStatus.OK);
     }
 

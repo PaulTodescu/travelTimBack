@@ -192,7 +192,7 @@ public class LodgingOfferService {
         return false;
     }
 
-    public LodgingOfferEntity findPhysicalPersonLodgingOfferById(Long offerId) {
+    public PhysicalPersonLodgingOfferDetailsDTO findPhysicalPersonLodgingOfferById(Long offerId) {
         PhysicalPersonLodgingOfferEntity offer = this.physicalPersonLodgingOfferDAO
                 .findPhysicalPersonLodgingOfferEntityById(offerId)
                 .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -200,20 +200,21 @@ public class LodgingOfferService {
                                 " was not found")
                 );
         offer.setNrViews(offer.getNrViews() + 1);
-        if (offer.getCurrency() == Currency.EUR){
+        LodgingDTOMapper mapper = new LodgingDTOMapper();
+        PhysicalPersonLodgingOfferDetailsDTO offerDetailsDTO = mapper.mapPhysicalPersonLodgingOfferToDetailsDTO(offer);
+        if (offerDetailsDTO.getCurrency() == Currency.EUR){
              try {
             CurrencyConverter currencyConverter = new CurrencyConverter();
-            //Float conversionRateFromEUR = currencyConverter
-            //        .getCurrencyConversionRate(Currency.EUR.name(), Currency.RON.name());
-            offer.setPrice(currencyConverter.getConvertedPrice(offer.getPrice(), 1F));
-            offer.setCurrency(Currency.RON);
-            } catch (Exception e) {}
-             //catch (IOException ioException) {
-//                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-//                        "Could not retrieve currency for monetary conversion");
- //           }
+            Float conversionRateFromEUR = currencyConverter
+                    .getCurrencyConversionRate(Currency.EUR.name(), Currency.RON.name());
+                 offerDetailsDTO.setPrice(currencyConverter.getConvertedPrice(offer.getPrice(), conversionRateFromEUR));
+                 offerDetailsDTO.setCurrency(Currency.RON);
+            } catch (IOException ioException) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                        "Could not retrieve currency for monetary conversion");
+            }
         }
-        return offer;
+        return offerDetailsDTO;
     }
 
     public PhysicalPersonLodgingOfferEditDTO findPhysicalPersonLodgingOfferForEdit(Long offerId) {

@@ -82,4 +82,8 @@ public class LodgingDTOMapper {
         return this.modelMapper.map(offer, LodgingOfferDetailsForReservationDTO.class);
     }
 
+    public PhysicalPersonLodgingOfferDetailsDTO mapPhysicalPersonLodgingOfferToDetailsDTO(PhysicalPersonLodgingOfferEntity offer) {
+        return this.modelMapper.map(offer, PhysicalPersonLodgingOfferDetailsDTO.class);
+    }
+
 }

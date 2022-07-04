@@ -164,7 +164,6 @@ public class ImageService {
         String uploadPath = this.getOfferUploadPath(offerType, offerId);
         Page<Blob> blobs = storage.list("traveltim-images", Storage.BlobListOption.prefix(uploadPath));
         for (Blob imageBlob: blobs.getValues()) {
-            System.out.println(imageBlob.getMediaLink());
             images.add(imageBlob.getMediaLink());
         }
         return images;
